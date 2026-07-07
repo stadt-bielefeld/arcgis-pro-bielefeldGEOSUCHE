@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="SearchResultsDockPaneView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Grid Margin="8">
+		<StackPanel>
+			<TextBlock Text="Suchergebnisse"
+                       FontWeight="Bold"
+                       Margin="0,0,0,8" />
+
+			<TextBlock Text="{Binding Results.Count, StringFormat=Anzahl: {0}}"
+                       Margin="0,0,0,8" />
+
+			<ListBox ItemsSource="{Binding Results}"
+                     SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
+                     MinHeight="150"
+                     MinWidth="260">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Label}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</StackPanel>
+	</Grid>
+
+</UserControl>

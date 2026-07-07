@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "bielefeldgeosuche": {
+      "commandName": "Executable",
+      "executablePath": "c:\\Program Files\\ArcGIS\\Pro\\bin\\ArcGISPro.exe"
+    }
+  }
+}
