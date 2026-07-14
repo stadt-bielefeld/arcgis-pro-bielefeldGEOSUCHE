@@ -2,12 +2,15 @@
 Imports System.Text.Json
 Imports System.Threading
 Imports System.Threading.Tasks
-Imports ArcGIS.Desktop.Framework.Dialogs
 
 Public Class SearchService
 
     Private Shared ReadOnly _httpClient As New HttpClient With {
         .Timeout = TimeSpan.FromSeconds(10)
+    }
+
+    Private Shared ReadOnly _jsonOptions As New JsonSerializerOptions With {
+        .PropertyNameCaseInsensitive = True
     }
 
     Public Shared Async Function SearchAsync(term As String, cancellationToken As CancellationToken) As Task(Of List(Of SearchResult))
@@ -19,37 +22,43 @@ Public Class SearchService
         Dim encodedTerm As String = Uri.EscapeDataString(term.Trim())
         Dim url As String = $"https://stadtplan.bielefeld.de/search/?term={encodedTerm}"
 
-        'MessageBox.Show("HTTP-Aufruf startet:" & vbCrLf & url, "Debug SearchService")
+        Return Await GetResultsAsync(url, cancellationToken)
+
+    End Function
+
+    Public Shared Async Function SearchCatalogAsync(catalog As String, term As String, cancellationToken As CancellationToken) As Task(Of List(Of SearchResult))
+
+        If String.IsNullOrWhiteSpace(catalog) Then
+            Return New List(Of SearchResult)()
+        End If
+
+        Dim encodedCatalog As String = Uri.EscapeDataString(catalog.Trim())
+        Dim url As String = $"https://stadtplan.bielefeld.de/search/?catalog={encodedCatalog}"
+
+        If Not String.IsNullOrWhiteSpace(term) Then
+            url &= $"&term={Uri.EscapeDataString(term.Trim())}"
+        End If
+
+        Return Await GetResultsAsync(url, cancellationToken)
+
+    End Function
+
+    Private Shared Async Function GetResultsAsync(url As String, cancellationToken As CancellationToken) As Task(Of List(Of SearchResult))
 
         Using response As HttpResponseMessage = Await _httpClient.GetAsync(url, cancellationToken)
-
-            'MessageBox.Show(
-            '    "HTTP-Status: " & CInt(response.StatusCode).ToString() & " " & response.ReasonPhrase,
-            '    "Debug SearchService"
-            ')
 
             response.EnsureSuccessStatusCode()
 
             Dim json As String = Await response.Content.ReadAsStringAsync(cancellationToken)
 
-            'MessageBox.Show("JSON:" & vbCrLf & json, "Debug SearchService")
-
-            Dim options As New JsonSerializerOptions With {
-                .PropertyNameCaseInsensitive = True
-            }
-
-            Dim results = JsonSerializer.Deserialize(Of List(Of SearchResult))(json, options)
-
-            'MessageBox.Show(
-            '    "Anzahl: " & If(results Is Nothing, "Nothing", results.Count.ToString()),
-            '    "Debug SearchService"
-            ')
+            Dim results = JsonSerializer.Deserialize(Of List(Of SearchResult))(json, _jsonOptions)
 
             If results Is Nothing Then
                 Return New List(Of SearchResult)()
             End If
 
             Return results
+
         End Using
 
     End Function

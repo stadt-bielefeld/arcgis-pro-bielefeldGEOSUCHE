@@ -2,26 +2,62 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<Grid Margin="8">
-		<StackPanel>
-			<TextBlock Text="Suchergebnisse"
-                       FontWeight="Bold"
-                       Margin="0,0,0,8" />
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
 
-			<TextBlock Text="{Binding Results.Count, StringFormat=Anzahl: {0}}"
-                       Margin="0,0,0,8" />
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-			<ListBox ItemsSource="{Binding Results}"
-                     SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
-                     MinHeight="150"
-                     MinWidth="260">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding Label}" />
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-		</StackPanel>
-	</Grid>
+        <TextBlock Grid.Row="0"
+                   Text="Suchergebnisse"
+                   FontWeight="Bold"
+                   Margin="0,0,0,8" />
+
+        <TextBlock Grid.Row="1"
+           Text="{Binding SelectionInfo}"
+           TextWrapping="Wrap"
+           Margin="0,0,0,4" />
+
+        <TextBlock Grid.Row="2"
+           Text="{Binding SelectionPath}"
+           FontWeight="SemiBold"
+           TextWrapping="Wrap"
+           Margin="0,0,0,8" />
+
+        <DockPanel Grid.Row="3"
+           Margin="0,0,0,8">
+            <Button Content="Zurück"
+                    Command="{Binding BackCommand}"
+                    Visibility="{Binding CanGoBack, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Padding="8,4"
+                    Margin="0,0,8,0"
+                    DockPanel.Dock="Left" />
+
+            <TextBlock Text="{Binding Results.Count, StringFormat=Anzahl: {0}}"
+                       VerticalAlignment="Center" />
+        </DockPanel>
+
+        <ListBox Grid.Row="4"
+            ItemsSource="{Binding Results}"
+            SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
+            IsSynchronizedWithCurrentItem="False"
+            MinWidth="260"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Label}"
+                               TextWrapping="Wrap" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 
 </UserControl>

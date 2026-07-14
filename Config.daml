@@ -27,10 +27,19 @@
       </tabs>
 
       <groups>
-        <group id="BielefeldSearch_Group" caption="Suche">
-          <editBox refID="BielefeldSearch_SearchEditBox" sizeString="Adress- oder Koordinateneingabe Bielefeld" />
-          <button refID="BielefeldSearch_SearchButton" size="large" />
-        </group>
+		  <group id="BielefeldSearch_Group" caption="Suche">
+			  <editBox refID="BielefeldSearch_SearchEditBox"
+					   sizeString="Adress- oder Koordinateneingabe Bielefeld" />
+
+			  <button refID="BielefeldSearch_SearchButton"
+					  size="large" />
+
+			  <button refID="BielefeldSearch_AddressSelectionButton"
+					  size="middle" />
+
+			  <button refID="BielefeldSearch_ParcelSelectionButton"
+					  size="middle" />
+		  </group>
       </groups>
 
       <controls>
@@ -50,6 +59,29 @@
 				  Startet die Adresssuche.
 			  </tooltip>
 		  </button>
+		  
+		  <button id="BielefeldSearch_AddressSelectionButton"
+        caption="Adress-Auswahlsuche"
+        className="AddressSelectionButton"
+        loadOnClick="true"
+        smallImage="Images\search-circle-outline16.png"
+        largeImage="Images\search-circle-outline32.png">
+			  <tooltip heading="Adress-Auswahlsuche">
+				  Öffnet die schrittweise Adress-Auswahlsuche.
+			  </tooltip>
+		  </button>
+
+		  <button id="BielefeldSearch_ParcelSelectionButton"
+				  caption="Flurstück-Auswahlsuche"
+				  className="ParcelSelectionButton"
+				  loadOnClick="true"
+				  smallImage="Images\search-circle-outline16.png"
+				  largeImage="Images\search-circle-outline32.png">
+			  <tooltip heading="Flurstück-Auswahlsuche">
+				  Öffnet die schrittweise Flurstück-Auswahlsuche.
+			  </tooltip>
+		  </button>
+		  
 		  <tool id="BielefeldSearch_ClearHighlightMapTool"
       caption="Highlight entfernen"
       className="ClearHighlightMapTool"

@@ -11,4 +11,10 @@ Public Class SearchResult
     <JsonPropertyName("sml")>
     Public Property Sml As Object
 
+    <JsonPropertyName("catalog")>
+    Public Property Catalog As String
+
+    <JsonPropertyName("key")>
+    Public Property Key As String
+
 End Class
