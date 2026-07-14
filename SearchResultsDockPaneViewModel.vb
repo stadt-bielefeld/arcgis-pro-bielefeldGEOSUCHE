@@ -765,13 +765,13 @@ Friend Class SearchResultsDockPaneViewModel
 
                                  If TypeOf targetGeometry Is MapPoint Then
 
-                                     ' Punkte immer im Maßstab 1:2000 anzeigen.
+                                     ' Punkte immer im Maßstab 1:1000 anzeigen.
                                      Dim point = DirectCast(targetGeometry, MapPoint)
 
                                      Dim camera As Camera = MapView.Active.Camera
                                      camera.X = point.X
                                      camera.Y = point.Y
-                                     camera.Scale = 2000
+                                     camera.Scale = 1000
 
                                      MapView.Active.ZoomTo(camera, TimeSpan.FromMilliseconds(300))
 
@@ -783,20 +783,13 @@ Friend Class SearchResultsDockPaneViewModel
                                          Return
                                      End If
 
-                                     ' Etwas Rand um die Geometrie geben, damit das Highlight nicht am Kartenrand klebt.
+                                     ' Linien, Polygone und andere Flächen immer vollständig anzeigen,
+                                     ' unabhängig davon, ob sie klein oder groß sind.
+                                     ' Der Faktor 1.2 gibt etwas Rand um die Geometrie.
                                      Dim paddedExtent As Envelope = extent.Expand(1.2, 1.2, True)
 
-                                     ' Erst auf die komplette Geometrie zoomen.
                                      MapView.Active.ZoomTo(paddedExtent, TimeSpan.FromMilliseconds(300))
 
-                                     ' Danach prüfen: Wenn der resultierende Maßstab kleiner/weiter draußen ist als 1:2000,
-                                     ' dann beibehalten. Wenn ArcGIS sehr weit reingezoomt hat, maximal auf 1:2000 setzen.
-                                     Dim camera As Camera = MapView.Active.Camera
-
-                                     If camera.Scale < 2000 Then
-                                         camera.Scale = 2000
-                                         MapView.Active.ZoomTo(camera, TimeSpan.FromMilliseconds(100))
-                                     End If
 
                                  End If
 

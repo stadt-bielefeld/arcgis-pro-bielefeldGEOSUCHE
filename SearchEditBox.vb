@@ -5,10 +5,24 @@ Imports System.Threading.Tasks
 Friend Class SearchEditBox
     Inherits EditBox
 
+    Private Const PlaceholderText As String = "Suche"
+
     Private _debounceCts As CancellationTokenSource
+    Private _isPlaceholderActive As Boolean = True
+
+    Public Sub New()
+        Text = PlaceholderText
+    End Sub
 
     Protected Overrides Sub OnTextChange(text As String)
         MyBase.OnTextChange(text)
+
+        If _isPlaceholderActive AndAlso text = PlaceholderText Then
+            Module1.Current.CurrentSearchText = ""
+            Return
+        End If
+
+        _isPlaceholderActive = False
 
         Module1.Current.CurrentSearchText = text
 
@@ -20,7 +34,9 @@ Friend Class SearchEditBox
             End Try
         End If
 
-        If String.IsNullOrWhiteSpace(text) OrElse text.Trim().Length < 3 Then
+        If String.IsNullOrWhiteSpace(text) OrElse
+           text.Trim().Length < 3 OrElse
+           text.Trim().Equals(PlaceholderText, StringComparison.OrdinalIgnoreCase) Then
             Return
         End If
 
@@ -34,6 +50,11 @@ Friend Class SearchEditBox
             Await Task.Delay(350, token)
 
             If token.IsCancellationRequested Then
+                Return
+            End If
+
+            If String.IsNullOrWhiteSpace(searchText) OrElse
+               searchText.Trim().Equals(PlaceholderText, StringComparison.OrdinalIgnoreCase) Then
                 Return
             End If
 

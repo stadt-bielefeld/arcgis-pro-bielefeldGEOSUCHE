@@ -20,37 +20,40 @@
                   autoLoad="false"
                   caption="bielefeldGEOSUCHE">
 
-      <tabs>
-        <tab id="BielefeldSearch_Tab" caption="bielefeldGEOSUCHE">
-          <group refID="BielefeldSearch_Group" />
-        </tab>
-      </tabs>
+		<tabs>
+			<tab id="BielefeldSearch_Tab" caption="bielefeldGEOSUCHE">
+				<group refID="BielefeldSearch_SearchGroup" />
+				<group refID="BielefeldSearch_SelectionGroup" />
+			</tab>
+		</tabs>
 
-      <groups>
-		  <group id="BielefeldSearch_Group" caption="Suche">
-			  <editBox refID="BielefeldSearch_SearchEditBox"
-					   sizeString="Adress- oder Koordinateneingabe Bielefeld" />
+		<groups>
+			<group id="BielefeldSearch_SearchGroup" caption="Suche">
+				<editBox refID="BielefeldSearch_SearchEditBox"
+						 sizeString="Adress- oder Koordinateneingabe Bielefeld" />
 
-			  <button refID="BielefeldSearch_SearchButton"
-					  size="large" />
+				<button refID="BielefeldSearch_SearchButton"
+						size="small" />
+			</group>
 
-			  <button refID="BielefeldSearch_AddressSelectionButton"
-					  size="middle" />
+			<group id="BielefeldSearch_SelectionGroup" caption=" ">
+				<button refID="BielefeldSearch_AddressSelectionButton"
+						size="middle" />
 
-			  <button refID="BielefeldSearch_ParcelSelectionButton"
-					  size="middle" />
-		  </group>
-      </groups>
+				<button refID="BielefeldSearch_ParcelSelectionButton"
+						size="middle" />
+			</group>
+		</groups>
 
       <controls>
         <editBox id="BielefeldSearch_SearchEditBox"
-                 caption="Adresse"
+                 caption=""
                  className="SearchEditBox"
                  sizeString="Adress- oder Koordinateneingabe Bielefeld"
                  isEditable="true" />
 
 		  <button id="BielefeldSearch_SearchButton"
-		  caption="Suchen"
+		  caption=" "
 		  className="SearchButton"
 		  loadOnClick="true"
 		  smallImage="Images\search-circle-outline16.png"
